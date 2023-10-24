@@ -68,7 +68,7 @@ systemctl start suricata
 sleep 10
 
 # Step 6: Update suricata 
-cp suricata_temp.yml /etc/suricata/suricata.yaml
+cp suricata_temp.yaml /etc/suricata/suricata.yaml
 
 systemctl restart suricata
 
