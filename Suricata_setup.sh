@@ -57,11 +57,6 @@ sed -i "s/^IFACE=.*/IFACE=$interface/" /etc/default/suricata
 sed -i "s/\$interface/$interface/g" /home/analyst/Desktop/suricata_temp.yaml
 
 
-
-# Create a modified suricata_temp.yml configuration file
-
-
-
 # Step 4: Update Suricata configuration files with the active interface
 echo "Updating Suricata configuration files..."
 
@@ -72,10 +67,9 @@ systemctl start suricata
 
 sleep 10
 
-#cp suricata_temp.yml /etc/suricata/suricata.yaml
+# Step 6: Update suricata 
+cp suricata_temp.yml /etc/suricata/suricata.yaml
 
-
-cp /home/analyst/Desktop/suricata_temp.yaml /etc/suricata/suricata.yaml
 systemctl restart suricata
 
 tail -f /var/log/suricata/suricata.log
