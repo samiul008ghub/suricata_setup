@@ -72,7 +72,17 @@ cp suricata_temp.yaml /etc/suricata/suricata.yaml
 
 systemctl restart suricata
 
-tail -f /var/log/suricata/suricata.log
+# Wait for Suricata to start
+echo "Waiting for Suricata to start..."
+while true; do
+    if grep -q "Engine started" /var/log/suricata/suricata.log; then
+        break
+    fi
+    sleep 10
+done
+
+# Continue after Suricata has started
+echo "Suricata is now running."
 
 if [ $? -ne 0 ]; then
     echo "Error: Suricata failed to start."
