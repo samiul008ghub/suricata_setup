@@ -81,9 +81,6 @@ while true; do
     sleep 10
 done
 
-# Continue after Suricata has started
-echo "Suricata is now running."
-
 if [ $? -ne 0 ]; then
     echo "Error: Suricata failed to start."
 else
