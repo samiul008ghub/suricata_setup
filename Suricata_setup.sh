@@ -67,7 +67,7 @@ systemctl start suricata
 
 sleep 10
 
-# Step 6: Update suricata 
+# Step 6: Update suricata config file
 cp suricata_temp.yaml /etc/suricata/suricata.yaml
 
 systemctl restart suricata
@@ -87,5 +87,73 @@ else
     echo "Suricata is now running."
 fi
 
-exit 0
+# Step 7: Install and configure suricata-update
+
+echo "Installing and configuring suricata-update..."
+
+apt-get install -y python3-pip
+
+pip3 install pyyaml
+
+pip3 install https://github.com/OISF/suricata-update/archive/master.zip
+
+
+
+# To upgrade suricata-update
+
+pip3 install --pre --upgrade suricata-update
+
+suricata-update
+
+suricata-update update-sources
+
+
+
+# To update enabled sources
+
+suricata-update enable-source oisf/trafficid
+
+suricata-update enable-source etnetera/aggressive
+
+suricata-update enable-source sslbl/ssl-fp-blacklist
+
+suricata-update enable-source et/open
+
+suricata-update enable-source tgreen/hunting
+
+suricata-update enable-source sslbl/ja3-fingerprints
+
+suricata-update enable-source ptresearch/attackdetection
+
+
+
+# Restart Suricata
+
+echo "Restarting Suricata..."
+
+systemctl restart suricata
+
+
+
+# Check for Suricata restart
+
+echo "Checking for Suricata restart..."
+
+while true; do
+
+    if grep -q "Engine started" /var/log/suricata/suricata.log; then
+
+        break
+
+    fi
+
+    sleep 10
+
+done
+
+
+
+echo "Suricata has been restarted with updated rules."
+
+
 
