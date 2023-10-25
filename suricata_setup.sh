@@ -152,8 +152,49 @@ while true; do
 done
 
 
-
 echo "Suricata has been restarted with updated rules."
+
+# Step 8: Enable and configure Filebeat Suricata module
+
+echo "Enabling and configuring Filebeat Suricata module..."
+
+sudo filebeat modules enable suricata
+
+
+
+# Modify the Suricata module settings
+
+echo "Modifying Suricata module settings..."
+
+cat <<EOL > /etc/filebeat/modules.d/suricata.yml
+
+- module: suricata
+
+  eve:
+
+    enabled: true
+
+    var.paths: ["/var/log/suricata/eve.json"]
+
+EOL
+
+
+# Restart Filebeat
+
+echo "Restarting Filebeat..."
+
+systemctl restart filebeat
+
+# Execute Filebeat setup
+
+echo "Running Filebeat setup..."
+
+filebeat setup -e
+
+echo "Filebeat is now configured and running."
+
+exit 0
+
 
 
 
